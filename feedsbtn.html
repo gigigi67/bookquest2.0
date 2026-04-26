@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Feed - BookQuest</title>
+
+    <!-- Google Font for futuristic typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset and Font Settings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: #0d1a26; /* Dark space-blue background */
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 255, 0.5);
+        }
+
+        /* Main glassmorphism container */
+        .container {
+            width: 95%;
+            max-width: 900px; /* Optimal width for a feed */
+            height: 90vh;
+            background: rgba(13, 40, 60, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 8px 18px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            background-color: transparent;
+            color: #a7c0d1;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-button:hover, .nav-button.active {
+            background-color: rgba(0, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+        
+        /* Main content area */
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        
+        /* Create Post Form */
+        .create-post-form {
+            background-color: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .create-post-form h2 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .post-textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #f0f0f0;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        .post-textarea:focus {
+            outline: none;
+            border-color: rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .post-button {
+            display: block;
+            margin-left: auto;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #00ffff, #0077ff);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .post-button:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Feed container */
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Single Post Card */
+        .post-card {
+            background-color: rgba(13, 40, 60, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00ffff, #0077ff);
+            color: #0d1a26;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.4em;
+            text-transform: uppercase;
+        }
+
+        .post-author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-author {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .post-timestamp {
+            font-size: 0.8em;
+            color: #a7c0d1;
+        }
+
+        .post-content p {
+            font-size: 1em;
+            color: #d0e0f0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+            padding-top: 15px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #a7c0d1;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .action-button:hover {
+            color: #00ffff;
+        }
+        
+        .action-button.liked {
+            color: #e74c3c;
+        }
+        .action-button.liked:hover {
+            color: #ff6b5a;
+        }
+
+        .action-button svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .comments-section {
+            display: none;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        
+        .comment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+        
+        .comment-body {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.9em;
+        }
+
+        .comment-text {
+            color: #d0e0f0;
+            font-size: 0.95em;
+            word-wrap: break-word;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            color: #f0f0f0;
+        }
+        
+        .comment-submit-btn {
+            padding: 8px 15px;
+            background-color: #009999;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .comment-submit-btn:hover {
+            background-color: #00c2c2;
+        }
+
+        /* --- RESPONSIVE DESIGN RULES --- */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                display: block;
+            }
+            .container {
+                width: 100%;
+                min-height: 100vh;
+                height: auto;
+                border-radius: 0;
+                padding: 15px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .main-content {
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header/Navigation Bar -->
+        <header class="header">
+            <h1>Community Hub</h1>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='Index.html'" class="nav-button">Home</button>
+                <button onclick="window.location.href='achievement.html'" class="nav-button">Achievements</button>
+                <button onclick="window.location.href='feedsbtn.html'" class="nav-button active">Community</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Create Post Section -->
+            <div class="create-post-form">
+                <h2>Create a Post</h2>
+                <textarea id="postTextarea" class="post-textarea" placeholder="What's on your mind, Quester?"></textarea>
+                <button id="addPostBtn" class="post-button">Broadcast</button>
+            </div>
+
+            <!-- Community Feed -->
+            <div id="feedContainer" class="feed-container">
+                <!-- Posts will be loaded here by JavaScript -->
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- USER AUTHENTICATION (Your existing JS logic is preserved) ---
+            const userString = localStorage.getItem('user'); 
+            const user = userString ? JSON.parse(userString) : {};
+            const currentUser = {
+                id: user.user_id,
+                username: user.username
+            };
+
+            if (!currentUser.id) {
+                console.error("No user logged in. Please log in to use the community feed.");
+                document.getElementById('addPostBtn').disabled = true;
+                document.getElementById('postTextarea').placeholder = "Please log in to create a post.";
+            }
+
+            const feedContainer = document.getElementById('feedContainer');
+
+            // --- MAIN FUNCTION TO LOAD POSTS ---
+            async function loadPosts() {
+                const response = await fetch(`/posts?user_id=${currentUser.id || 0}`);
+                const posts = await response.json();
+                
+                feedContainer.innerHTML = ''; // Clear existing posts
+
+                posts.forEach(post => {
+                    const postCard = document.createElement('div');
+                    postCard.classList.add('post-card');
+                    postCard.dataset.postId = post.id;
+
+                    const postDate = new Date(post.timestamp);
+                    const timeAgo = timeSince(postDate);
+
+                    postCard.innerHTML = `
+                        <div class="post-header">
+                            <div class="post-avatar">${post.author.charAt(0)}</div>
+                            <div class="post-author-info">
+                                <span class="post-author">${post.author}</span>
+                                <span class="post-timestamp">${timeAgo}</span>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>${escapeHTML(post.content)}</p>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-button like-btn ${post.liked_by_user ? 'liked' : ''}">
+                                <svg fill="${post.liked_by_user ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                <span>${post.like_count}</span>
+                            </button>
+                            <button class="action-button comment-btn">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                <span>${post.comment_count}</span>
+                            </button>
+                        </div>
+                        <div class="comments-section">
+                             <div class="comments-container"></div>
+                             <form class="comment-form">
+                                 <input type="text" class="comment-input" placeholder="Broadcast a reply...">
+                                 <button type="submit" class="comment-submit-btn">Reply</button>
+                             </form>
+                        </div>
+                    `;
+                    feedContainer.appendChild(postCard);
+                });
+                
+                addInteractivityToPosts();
+            }
+            
+            // --- ADD INTERACTIVITY TO BUTTONS ---
+            function addInteractivityToPosts() {
+                document.querySelectorAll('.post-card').forEach(postCard => {
+                    const postId = postCard.dataset.postId;
+                    
+                    postCard.querySelector('.like-btn').addEventListener('click', async () => {
+                        if (!currentUser.id) return alert("Please log in to like posts.");
+                        const response = await fetch(`/posts/${postId}/like`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ user_id: currentUser.id })
+                        });
+                        const data = await response.json();
+                        
+                        postCard.querySelector('.like-btn').classList.toggle('liked', data.liked);
+                        postCard.querySelector('.like-btn span').textContent = `${data.like_count}`;
+                        postCard.querySelector('.like-btn svg').setAttribute('fill', data.liked ? 'currentColor' : 'none');
+                    });
+
+                    postCard.querySelector('.comment-btn').addEventListener('click', () => {
+                        const commentsSection = postCard.querySelector('.comments-section');
+                        const isVisible = commentsSection.style.display === 'block';
+                        commentsSection.style.display = isVisible ? 'none' : 'block';
+                        if (!isVisible) {
+                            loadComments(postId);
+                        }
+                    });
+
+                    postCard.querySelector('.comment-form').addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        if (!currentUser.id) return alert("Please log in to comment.");
+
+                        const input = postCard.querySelector('.comment-input');
+                        const content = input.value.trim();
+                        if (!content) return;
+
+                        await fetch(`/posts/${postId}/comments`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ user_id: currentUser.id, content: content })
+                        });
+
+                        input.value = '';
+                        loadComments(postId);
+                        
+                        const commentCountSpan = postCard.querySelector('.comment-btn span');
+                        let currentCount = parseInt(commentCountSpan.textContent);
+                        commentCountSpan.textContent = `${currentCount + 1}`;
+                    });
+                });
+            }
+
+            async function loadComments(postId) {
+                const response = await fetch(`/posts/${postId}/comments`);
+                const comments = await response.json();
+                const commentsContainer = document.querySelector(`.post-card[data-post-id='${postId}'] .comments-container`);
+                
+                commentsContainer.innerHTML = '';
+                comments.forEach(comment => {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.classList.add('comment');
+                    commentDiv.innerHTML = `
+                        <div class="comment-avatar">${comment.author.charAt(0)}</div>
+                        <div class="comment-body">
+                            <span class="comment-author">${comment.author}</span>
+                            <p class="comment-text">${escapeHTML(comment.content)}</p>
+                        </div>
+                    `;
+                    commentsContainer.appendChild(commentDiv);
+                });
+            }
+
+            document.getElementById('addPostBtn').addEventListener('click', async () => {
+                const textarea = document.getElementById('postTextarea');
+                const content = textarea.value.trim();
+                if (!content || !currentUser.id) return;
+
+                await fetch('/posts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: currentUser.id, content: content })
+                });
+
+                textarea.value = '';
+                loadPosts();
+            });
+
+            // --- UTILITY FUNCTIONS ---
+            function escapeHTML(str) {
+                return str.replace(/[&<>'"]/g, 
+                    tag => ({
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;',
+                        "'": '&#39;', '"': '&quot;'
+                    }[tag] || tag)
+                );
+            }
+            
+            function timeSince(date) {
+                const seconds = Math.floor((new Date() - date) / 1000);
+                let interval = seconds / 31536000;
+                if (interval > 1) return Math.floor(interval) + "y";
+                interval = seconds / 2592000;
+                if (interval > 1) return Math.floor(interval) + "mo";
+                interval = seconds / 86400;
+                if (interval > 1) return Math.floor(interval) + "d";
+                interval = seconds / 3600;
+                if (interval > 1) return Math.floor(interval) + "h";
+                interval = seconds / 60;
+                if (interval > 1) return Math.floor(interval) + "m";
+                return Math.floor(seconds) + "s";
+            }
+
+            // --- INITIAL LOAD ---
+            loadPosts();
+        });
+    </script>
+</body>
+</html>
+

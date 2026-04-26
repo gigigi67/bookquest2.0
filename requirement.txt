@@ -1,0 +1,6 @@
+Flask>=2.0
+bcrypt>=3.2
+gunicorn>=20.1
+psycopg2-binary
+Faker
+google-generativeai

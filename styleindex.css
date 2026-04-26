@@ -1,0 +1,392 @@
+/* Reset and Font Settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    background: #0d1a26; /* Dark space-blue background */
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Custom Scrollbar for a futuristic feel */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.5);
+}
+
+/* Main glassmorphism container */
+.container {
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    background: rgba(13, 40, 60, 0.6); /* Semi-transparent glass */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    color: #ffffff;
+    font-size: 1.8em;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    padding: 8px 18px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: transparent;
+    color: #a7c0d1;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-button:hover, .nav-button.active {
+    background-color: rgba(0, 255, 255, 0.1);
+    color: #ffffff;
+    border-color: rgba(0, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+#logoutBtn {
+    padding: 8px 18px;
+    border: 1px solid rgba(231, 76, 60, 0.5);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+#logoutBtn:hover {
+    background-color: rgba(231, 76, 60, 0.3);
+    color: #ffffff;
+    border-color: #e74c3c;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
+}
+
+/* Dashboard Layout */
+.dashboard-content {
+    display: flex;
+    gap: 30px;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.quests-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.leaderboard-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* Profile Card - HUD Style */
+.profile-card {
+    background-color: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* --- Redesigned Circular Progress Bar --- */
+.progress-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+/* These old divs are hidden but kept for JS compatibility */
+.progress-mask, .progress-fill {
+    display: none;
+}
+
+.progress-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3); /* The empty track */
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+    /* Your existing JS uses mask divs, so we keep the structure */
+}
+
+.progress-inset {
+    width: 80px;
+    height: 80px;
+    background: #0d1a26;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    color: #a7c0d1;
+}
+
+#profileLevel {
+    font-size: 2.5em;
+    line-height: 1;
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+}
+/* --- End of Progress Bar Styles --- */
+
+
+.profile-details {
+    width: 100%;
+}
+
+.profile-details h3 {
+    color: #ffffff;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.profile-details p {
+    color: #a7c0d1;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+.progress-label {
+    margin-top: 5px;
+    font-size: 0.8em !important;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    transition: width 0.5s ease-out;
+    border-radius: 4px;
+}
+
+/* Quest List */
+#questList {
+    list-style: none;
+    padding: 0;
+}
+
+.quest-item {
+    background-color: rgba(0, 255, 255, 0.03);
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.quest-item:hover {
+    background-color: rgba(0, 255, 255, 0.08);
+    border-color: rgba(0, 255, 255, 0.3);
+    transform: translateX(5px);
+}
+
+.quest-info h3 {
+    color: #f0f0f0;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.quest-info p {
+    color: #a7c0d1;
+    font-size: 0.9em;
+}
+
+.quest-points {
+    font-weight: 600;
+    color: #00ffff;
+    background-color: rgba(0, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-right: 15px;
+}
+
+.complete-btn {
+    padding: 8px 15px;
+    background: linear-gradient(90deg, #00ffff, #0077ff);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.complete-btn:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.completed-tag {
+    background-color: rgba(189, 195, 199, 0.2);
+    color: #bdc3c7;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Leaderboard */
+.table-wrapper {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#leaderboardTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#leaderboardTable th, #leaderboardTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+/* --- THIS IS THE FIX --- */
+#leaderboardTable td {
+    color: #a7c0d1; /* Light cyan-gray for better contrast */
+}
+
+#leaderboardTable th {
+    background-color: rgba(13, 40, 60, 0.8);
+    color: #00ffff;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(5px);
+}
+
+#leaderboardTable tbody tr {
+    transition: background-color 0.2s;
+}
+
+#leaderboardTable tbody tr:hover {
+    background-color: rgba(0, 255, 255, 0.05);
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 900px) {
+    body {
+        padding: 0;
+        display: block;
+    }
+    .container {
+        width: 100%;
+        min-height: 100vh;
+        height: auto;
+        border-radius: 0;
+        padding: 20px;
+    }
+    .dashboard-content {
+        flex-direction: column;
+        overflow: visible;
+    }
+    .quests-section, .leaderboard-section {
+        overflow-y: visible;
+        padding-right: 0;
+    }
+    .leaderboard-section {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .nav-buttons {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+

@@ -1,0 +1,205 @@
+/* Reset and Font Settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0d1a26; /* Dark space-blue background */
+    color: #f0f0f0;
+    perspective: 1200px; /* Enables 3D transformations */
+    overflow: hidden;
+}
+
+/* Back layer styled as a glowing 3D platform */
+.plateform {
+    width: 380px;
+    height: 520px;
+    background: linear-gradient(45deg, rgba(13, 92, 99, 0.1), rgba(0, 255, 255, 0.05));
+    position: absolute;
+    transform: rotateX(75deg) translateZ(-120px); /* Tilted 3D effect */
+    border-radius: 20px;
+    box-shadow: 
+        0 0 30px rgba(0, 255, 255, 0.3), /* Inner glow */
+        0 0 60px rgba(0, 255, 255, 0.2), /* Middle glow */
+        0 0 120px rgba(0, 255, 255, 0.1); /* Outer glow */
+    transition: transform 0.5s ease;
+}
+
+/* Front container with a "glassmorphism" effect */
+.container {
+    width: 380px;
+    min-height: 500px;
+    background: rgba(13, 40, 60, 0.5); /* Semi-transparent glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* For Safari */
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+/* Login heading with a subtle glow */
+#login h1 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 35px;
+    font-size: 2.4em;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+/* Futuristic, glassy inputs */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 1em;
+    color: #f0f0f0;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Checkbox styling */
+.checkbox-inline {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: #a7c0d1;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #00ffff;
+    border-color: #00ffff;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '\\2713';
+    font-size: 14px;
+    color: #0d1a26;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Submit button with gradient and hover animation */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #00ffff, #0077ff);
+    color: #ffffff;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+    background: linear-gradient(90deg, #00e5e5, #0066cc);
+}
+
+/* Footer link styling */
+#footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+#footer p {
+    color: #a7c0d1;
+}
+
+#footer a {
+    color: #00ffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: text-shadow 0.3s;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+}
+
+/* --- RESPONSIVE DESIGN RULES --- */
+
+/* For Tablets and Mobile Phones */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        perspective: none; /* Disable 3D effect on mobile */
+    }
+
+    /* Hide the 3D platform on small screens */
+    .plateform {
+        display: none;
+    }
+
+    .container {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        padding: 40px 25px;
+        justify-content: center; /* Center form vertically */
+    }
+
+    #login h1 {
+        font-size: 2em; /* Adjust title for mobile */
+    }
+}
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Book Quest</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    <!-- Background layer -->
+    <div class="plateform"></div>
+
+    <!-- Main container -->
+    <div class="container">
+        <div id="register">
+            <h1>Create Account</h1>
+        </div>
+
+        <form id="registerForm" action="register.php" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="showPass"> Show Passwords
+                </label>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div id="footer">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </div>
+    
+    <script src="register.js"></script>
+</body>
+</html>

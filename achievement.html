@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Achievements - BookQuest</title>
+
+    <!-- Google Font for futuristic typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset and Font Settings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: #0d1a26; /* Dark space-blue background */
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 255, 0.5);
+        }
+
+        /* Main glassmorphism container */
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background: rgba(13, 40, 60, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 8px 18px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            background-color: transparent;
+            color: #a7c0d1;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-button:hover, .nav-button.active {
+            background-color: rgba(0, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(0, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+        
+        /* Main content area */
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        
+        .page-intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-intro h2 {
+            font-size: 2em;
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .page-intro p {
+            font-size: 1.1em;
+            color: #a7c0d1;
+        }
+
+        /* Achievements Grid Layout */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        /* Base style for each achievement card */
+        .achievement-card {
+            background: rgba(13, 40, 60, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            background: rgba(13, 40, 60, 0.9);
+            border-color: rgba(0, 255, 255, 0.3);
+        }
+        
+        .achievement-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-icon svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .achievement-card h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .achievement-card p {
+            font-size: 0.9em;
+            color: #a7c0d1;
+            flex-grow: 1;
+        }
+        
+        /* Styles for UNLOCKED achievements */
+        .achievement-card.unlocked {
+            border-left: 5px solid #00ffff;
+        }
+
+        .achievement-card.unlocked .achievement-icon {
+            background-color: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .achievement-card.unlocked .achievement-icon svg {
+            color: #00ffff;
+            filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.7));
+        }
+
+        .achievement-card.unlocked .unlocked-date {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #00ffff;
+            margin-top: 15px;
+        }
+        
+        /* Styles for LOCKED achievements */
+        .achievement-card.locked {
+            filter: grayscale(80%);
+            opacity: 0.6;
+        }
+        .achievement-card.locked:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        .achievement-card.locked .achievement-icon {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .achievement-card.locked .achievement-icon svg {
+            color: #a7c0d1;
+        }
+        .achievement-card.locked h3,
+        .achievement-card.locked p {
+            color: #a7c0d1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                display: block;
+            }
+            .container {
+                width: 100%;
+                min-height: 100vh;
+                height: auto;
+                border-radius: 0;
+                padding: 15px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .main-content {
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header/Navigation Bar -->
+        <header class="header">
+            <h1>Trophy Room</h1>
+            <div class="nav-buttons">
+                <button id="dashboardBtn" class="nav-button">Home</button>
+                <button id="achievementsBtn" class="nav-button active">Achievements</button>
+                <button id="feedsBtn" class="nav-button">Community</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="page-intro">
+                <h2>Your Achievements</h2>
+                <p>Keep reading and engaging to unlock them all!</p>
+            </div>
+
+            <!-- Achievements Grid -->
+            <div id="achievementsGrid" class="achievements-grid">
+                <!-- Achievements will be dynamically loaded here by your existing JS -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Your existing JavaScript is preserved -->
+    <script>
+        document.getElementById('feedsBtn').addEventListener('click', () => {
+            window.location.href = 'feedsbtn.html';
+        });
+
+        document.getElementById('dashboardBtn').addEventListener('click', () => {
+            window.location.href = 'Index.html';
+        });
+        
+        document.getElementById('achievementsBtn').addEventListener('click', () => {
+            console.log("Already on the achievements page!");
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const achievementsGrid = document.getElementById('achievementsGrid');
+            const currentUserData = localStorage.getItem('user');
+
+            if (!currentUserData) {
+                achievementsGrid.innerHTML = '<p style="color: #a7c0d1; text-align: center;">Please log in to see your achievements.</p>';
+                return;
+            }
+
+            const currentUser = JSON.parse(currentUserData);
+            const userId = currentUser.user_id || currentUser.id; 
+
+            if (!userId) {
+                console.error("Could not find user ID in localStorage object:", currentUser);
+                achievementsGrid.innerHTML = '<p style="color: #a7c0d1; text-align: center;">Could not verify your user ID. Please try logging in again.</p>';
+                return;
+            }
+
+            const iconMap = {
+                megaphone: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-2.236 9.168-5.584C18.354 5.23 18 6.697 18 8c0 3.314 2.686 6 6 6v-6a6 6 0 00-6-6z"></path></svg>`,
+                star: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 4v4m-2-2h4M17 3l-4 4-4-4M7 17l4-4 4 4"></path></svg>`,
+                scroll: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+                'book-open': `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>`,
+                users: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>`,
+                award: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>`,
+                heart: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>`,
+                default: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`
+            };
+            
+            achievementsGrid.innerHTML = '<p style="color: #a7c0d1; text-align: center;">Loading achievements...</p>';
+
+            fetch(`/achievements?user_id=${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(achievements => {
+                    achievementsGrid.innerHTML = '';
+                    if (!achievements || achievements.length === 0) {
+                        achievementsGrid.innerHTML = '<p style="color: #a7c0d1; text-align: center;">No achievements available yet. Start reading!</p>';
+                        return;
+                    }
+
+                    achievements.forEach(ach => {
+                        const isUnlocked = ach.unlocked === 1;
+                        const cardClass = isUnlocked ? 'unlocked' : 'locked';
+                        const iconSvg = iconMap[ach.icon] || iconMap.default;
+
+                        const achievementCard = document.createElement('div');
+                        achievementCard.className = `achievement-card ${cardClass}`;
+                        achievementCard.innerHTML = `
+                            <div class="achievement-icon">
+                                ${iconSvg}
+                            </div>
+                            <h3>${ach.name}</h3>
+                            <p>${ach.description}</p>
+                            ${isUnlocked ? '<p class="unlocked-date">Unlocked!</p>' : ''}
+                        `;
+                        achievementsGrid.appendChild(achievementCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching achievements:', error);
+                    achievementsGrid.innerHTML = '<p style="color: #a7c0d1; text-align: center;">Could not load achievements. Please try again later.</p>';
+                });
+        });
+    </script>
+
+</body>
+</html>
+
